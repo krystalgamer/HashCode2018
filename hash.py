@@ -12,11 +12,16 @@ def veiculoPontoInicial(veiculo, x, y):
     return abs(veiculo[0]-x) + abs(veiculo[1] - y)
 
 def imprimeEmFicheiro(carros):
-    with open('out') as fout:
+    with open('out', 'w') as fout:
         for i in range(len(carros)):
-            fout.write(str(i) + ' ')
-
-            
+            fout.write(str(i + 1) + ' ')
+            for indiceDaViagemAlocada in range(len(carros[i][3])):
+                if indiceDaViagemAlocada == (len(carros[i][3]) - 1):
+                    fout.write(str(carros[i][3][indiceDaViagemAlocada]))
+                else:
+                    fout.write(str(carros[i][3][indiceDaViagemAlocada]) + ' ')
+            if i != (len(carros) - 1):
+                fout.write('\n')
 
 def main():
     with open('a_example.in') as file:
@@ -71,9 +76,7 @@ def main():
                         viagensOcupadas.append(viagem_index)
                         break
 
-            for car in fleet:
-                print(car)
-                
+            imprimeEmFicheiro(fleet)    
             return
 
 
