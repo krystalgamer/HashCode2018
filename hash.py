@@ -1,4 +1,4 @@
-from os import argv
+from sys import argv
 
 nomeFicheiro = None
 
@@ -89,6 +89,9 @@ def main():
 
 if __name__ == "__main__":
     for nome in argv:
+        if 'hash' in nome:
+            continue
+        print(nome)
         nomeFicheiro = nome
         main()
 
