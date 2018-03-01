@@ -20,8 +20,8 @@ def imprimeEmFicheiro(carros):
                     fout.write(str(carros[i][3][indiceDaViagemAlocada]))
                 else:
                     fout.write(str(carros[i][3][indiceDaViagemAlocada]) + ' ')
-            if i != (len(carros) - 1):
-                fout.write('\n')
+            #if i != (len(carros) - 1):
+            fout.write('\n')
 
 def main():
     with open('a_example.in') as file:
