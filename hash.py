@@ -1,3 +1,7 @@
+from os import argv
+
+nomeFicheiro = None
+
 def filtrarLixo(delta, step, dist):
     if dist >= step:
         print('dist maior')
@@ -12,7 +16,7 @@ def veiculoPontoInicial(veiculo, x, y):
     return abs(veiculo[0]-x) + abs(veiculo[1] - y)
 
 def imprimeEmFicheiro(carros):
-    with open('out', 'w') as fout:
+    with open(nomeFicheiro + '.out', 'w') as fout:
         for carro in carros:
             #Carro n tem biagem alocada
             if carro[2] == False:
@@ -28,7 +32,7 @@ def imprimeEmFicheiro(carros):
             fout.write('\n')
 
 def main():
-    with open('a_example.in') as file:
+    with open(nomeFicheiro) as file:
         ficheiro = file.readlines()
         rows, columns, vehicles, rides, bonus, steps = tuple(map(int, ficheiro[0].split()))
 
@@ -83,11 +87,8 @@ def main():
             imprimeEmFicheiro(fleet)    
             return
 
-
-
-
-
-
-
 if __name__ == "__main__":
-    main()
+    for nome in argv:
+        nomeFicheiro = nome
+        main()
+
