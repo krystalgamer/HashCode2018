@@ -1,3 +1,4 @@
+from operator import itemgetter
 from sys import argv
 
 nomeFicheiro = None
@@ -14,6 +15,16 @@ def filtrarLixo(delta, step, dist):
 
 def veiculoPontoInicial(veiculo, x, y):
     return abs(veiculo[0]-x) + abs(veiculo[1] - y)
+
+def contarViagens(biagens):
+    counter = 0
+    for a in biagens:
+        if type(a) is int:
+            continue
+        counter+=1
+    print(str(counter))
+    return counter
+
 
 def imprimeEmFicheiro(carros):
     with open(nomeFicheiro + '.out', 'w') as fout:
@@ -38,7 +49,11 @@ def main():
 
         viagem = []
         for trip in range(1, len(ficheiro)):
-            viagem.append(list(map(int, ficheiro[trip].split())))
+            viagem.append(list([trip-1] + list(map(int, ficheiro[trip].split()))))
+
+        print(viagem)
+        viagem.sort(key=lambda x: x[4])
+        print(viagem)
 
         #Prioridades
         #Bonus
@@ -69,20 +84,39 @@ def main():
             return
         else:
             for car in fleet:
-                if car[2] == True:
-                    continue
                 for viagem_index in range(len(viagem)):
                     if type(viagem[viagem_index]) is int:
                         continue
-                    if viagem_index in viagensOcupadas:
-                        continue
                     
-                    if (distancias[viagem_index] + veiculoPontoInicial(car, viagem[viagem_index][0],viagem[viagem_index][1])) < steps:   
-                        car[3].append(viagem_index)
+                    if (distancias[viagem_index] + veiculoPontoInicial(car, viagem[viagem_index][1],viagem[viagem_index][2])) < steps:   
+                        car[3].append(viagem[viagem_index][0])
                         car[2] = True
-                        car[4] = (distancias[viagem_index] + veiculoPontoInicial(car, viagem[viagem_index][0],viagem[viagem_index][1]))
-                        viagensOcupadas.append(viagem_index)
+                        car[4] = (distancias[viagem_index] + veiculoPontoInicial(car, viagem[viagem_index][1],viagem[viagem_index][2]))
+                        viagensOcupadas.append(viagem[viagem_index][0])
+                        #Altera pos do carro
+                        car[0] = viagem[viagem_index][1]
+                        car[1] = viagem[viagem_index][2]
+
+                        viagem[viagem_index] = 0
                         break
+
+            while(contarViagens(viagem) != 0):
+                for car in fleet:
+                    for viagem_index in range(len(viagem)):
+                        if type(viagem[viagem_index]) is int:
+                            continue
+                        
+                        if (distancias[viagem_index] + veiculoPontoInicial(car, viagem[viagem_index][1],viagem[viagem_index][2])) < steps:   
+                            car[3].append(viagem[viagem_index][0])
+                            car[2] = True
+                            car[4] += (distancias[viagem_index] + veiculoPontoInicial(car, viagem[viagem_index][1],viagem[viagem_index][2]))
+                            viagensOcupadas.append(viagem[viagem_index][0])
+                            #Altera pos do carro
+                            car[0] = viagem[viagem_index][1]
+                            car[1] = viagem[viagem_index][2]
+
+                            viagem[viagem_index] = 0
+                            break
 
             imprimeEmFicheiro(fleet)    
             return
