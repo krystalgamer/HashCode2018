@@ -13,13 +13,17 @@ def veiculoPontoInicial(veiculo, x, y):
 
 def imprimeEmFicheiro(carros):
     with open('out', 'w') as fout:
-        for i in range(len(carros)):
-            fout.write(str(i + 1) + ' ')
-            for indiceDaViagemAlocada in range(len(carros[i][3])):
-                if indiceDaViagemAlocada == (len(carros[i][3]) - 1):
-                    fout.write(str(carros[i][3][indiceDaViagemAlocada]))
+        for carro in carros:
+            #Carro n tem biagem alocada
+            if carro[2] == False:
+                continue
+
+            fout.write(str(len(carro[3])) + ' ')
+            for indiceDaViagemAlocada in range(len(carro[3])):
+                if indiceDaViagemAlocada == (len(carro[3]) - 1):
+                    fout.write(str(carro[3][indiceDaViagemAlocada]))
                 else:
-                    fout.write(str(carros[i][3][indiceDaViagemAlocada]) + ' ')
+                    fout.write(str(carro[3][indiceDaViagemAlocada]) + ' ')
             #if i != (len(carros) - 1):
             fout.write('\n')
 
